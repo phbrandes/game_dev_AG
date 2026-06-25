@@ -1,4 +1,5 @@
 import { GameConfig } from './GameConfig';
+import { GridEntity } from './GridEntity';
 
 export class TickScheduler {
     private static instance: TickScheduler;
@@ -8,7 +9,7 @@ export class TickScheduler {
     private isRunning: boolean = false;
     private currentTick: number = 0;
 
-    private tickHandlers: Set<() => void> = new Set();
+    private entities: Set<GridEntity> = new Set();
 
     private constructor() {}
 
@@ -43,17 +44,33 @@ export class TickScheduler {
 
     private executeTick(): void {
         this.currentTick++;
-        for (const handler of this.tickHandlers) {
-            handler();
+        
+        // Sweep A: Inquiry/Handshake
+        for (const entity of this.entities) {
+            entity.sweepA();
+        }
+
+        // Sweep B: Physical memory commit
+        for (const entity of this.entities) {
+            entity.sweepB();
         }
     }
 
-    public registerHandler(handler: () => void): void {
-        this.tickHandlers.add(handler);
+    public registerEntity(entity: GridEntity): void {
+        this.entities.add(entity);
     }
 
-    public removeHandler(handler: () => void): void {
-        this.tickHandlers.delete(handler);
+    public removeEntity(entity: GridEntity): void {
+        this.entities.delete(entity);
+    }
+
+    public getEntityAt(x: number, y: number): GridEntity | undefined {
+        for (const entity of this.entities) {
+            if (entity.position.x === x && entity.position.y === y) {
+                return entity;
+            }
+        }
+        return undefined;
     }
 
     public getCurrentTick(): number {
@@ -65,6 +82,6 @@ export class TickScheduler {
         this.lastTime = 0;
         this.currentTick = 0;
         this.isRunning = false;
-        this.tickHandlers.clear();
+        this.entities.clear();
     }
 }

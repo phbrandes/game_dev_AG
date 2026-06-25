@@ -1,4 +1,5 @@
 import { Point2D, UUID, Orientation } from './Types';
+import { ItemPayload } from './ItemPayload';
 
 export abstract class GridEntity {
     public readonly id: UUID;
@@ -11,5 +12,9 @@ export abstract class GridEntity {
         this.orientation = orientation;
     }
 
-    public abstract tick(): void;
+    public abstract canAcceptItem(itemType: string): boolean;
+    public abstract transferItem(item: ItemPayload): void;
+    
+    public abstract sweepA(): void;
+    public abstract sweepB(): void;
 }

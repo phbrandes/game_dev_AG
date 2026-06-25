@@ -4,12 +4,20 @@ import { GameConfig } from '../src/core/GameConfig';
 import { GridMap } from '../src/core/GridMap';
 import { GridEntity } from '../src/core/GridEntity';
 import { Point2D, Orientation, generateUUID } from '../src/core/Types';
+import { ItemPayload } from '../src/core/ItemPayload';
 
 class DummyEntity extends GridEntity {
-    public tickCount: number = 0;
+    public sweepACount: number = 0;
+    public sweepBCount: number = 0;
     
-    public tick(): void {
-        this.tickCount++;
+    public canAcceptItem(itemType: string): boolean { return false; }
+    public transferItem(item: ItemPayload): void {}
+    
+    public sweepA(): void {
+        this.sweepACount++;
+    }
+    public sweepB(): void {
+        this.sweepBCount++;
     }
 }
 
@@ -59,10 +67,8 @@ describe('Phase 1: Core Grid & Tick Engine', () => {
         map.setEntityIndex(0, 0, 10);
         map.setSignal(0, 0, 15);
         
-        let ticksFired = 0;
-        scheduler.registerHandler(() => {
-            ticksFired++;
-        });
+        const dummy = new DummyEntity(generateUUID(), {x:0, y:0}, Orientation.North);
+        scheduler.registerEntity(dummy);
 
         scheduler.start(0);
         
@@ -80,7 +86,8 @@ describe('Phase 1: Core Grid & Tick Engine', () => {
         scheduler.update(targetTime);
         
         expect(scheduler.getCurrentTick()).toBe(1000);
-        expect(ticksFired).toBe(1000);
+        expect(dummy.sweepACount).toBe(1000);
+        expect(dummy.sweepBCount).toBe(1000);
         
         // Assert zero state mutation on the map
         expect(map.getFloor(0, 0)).toBe(5);
@@ -97,7 +104,9 @@ describe('Phase 1: Core Grid & Tick Engine', () => {
         expect(entity.position).toEqual({ x: 1, y: 2 });
         expect(entity.orientation).toBe(Orientation.East);
         
-        entity.tick();
-        expect(entity.tickCount).toBe(1);
+        entity.sweepA();
+        entity.sweepB();
+        expect(entity.sweepACount).toBe(1);
+        expect(entity.sweepBCount).toBe(1);
     });
 });
