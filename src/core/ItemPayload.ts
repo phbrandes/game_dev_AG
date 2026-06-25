@@ -1,4 +1,4 @@
-import { UUID } from './Types';
+import type { UUID } from './Types.js';
 
 export class ItemPayload {
     public readonly typeId: string;

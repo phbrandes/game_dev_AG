@@ -1,9 +1,9 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { TickScheduler } from '../src/core/TickScheduler';
-import { GameConfig } from '../src/core/GameConfig';
-import { ConveyorEntity } from '../src/logistics/ConveyorEntity';
-import { ItemPayload } from '../src/core/ItemPayload';
-import { Point2D, Orientation, generateUUID } from '../src/core/Types';
+import { TickScheduler } from '../src/core/TickScheduler.js';
+import { GameConfig } from '../src/core/GameConfig.js';
+import { ConveyorEntity } from '../src/logistics/ConveyorEntity.js';
+import { ItemPayload } from '../src/core/ItemPayload.js';
+import { type Point2D, Orientation, generateUUID } from '../src/core/Types.js';
 
 describe('Phase 2: Conveyor Queues & Item Handshakes', () => {
     beforeEach(() => {

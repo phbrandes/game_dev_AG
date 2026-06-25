@@ -1,5 +1,5 @@
-import { Point2D } from './Types';
-import { GridMap } from './GridMap';
+import type { Point2D } from './Types.js';
+import { GridMap } from './GridMap.js';
 
 export interface IPowerNode {
     readonly position: Point2D;

@@ -1,8 +1,8 @@
-import { GridEntity } from '../core/GridEntity';
-import { ItemPayload } from '../core/ItemPayload';
-import { Point2D, Orientation } from '../core/Types';
-import { TickScheduler } from '../core/TickScheduler';
-import { GameConfig } from '../core/GameConfig';
+import { GridEntity } from '../core/GridEntity.js';
+import { ItemPayload } from '../core/ItemPayload.js';
+import { type Point2D, Orientation } from '../core/Types.js';
+import { TickScheduler } from '../core/TickScheduler.js';
+import { GameConfig } from '../core/GameConfig.js';
 
 export class ConveyorEntity extends GridEntity {
     private slots: (ItemPayload | null)[] = [null, null, null];

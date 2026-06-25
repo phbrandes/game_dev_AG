@@ -1,5 +1,5 @@
-import { GameConfig } from './GameConfig';
-import { GridEntity } from './GridEntity';
+import { GameConfig } from './GameConfig.js';
+import { GridEntity } from './GridEntity.js';
 
 export class TickScheduler {
     private static instance: TickScheduler;

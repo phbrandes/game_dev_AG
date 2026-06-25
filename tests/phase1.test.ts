@@ -1,10 +1,10 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { TickScheduler } from '../src/core/TickScheduler';
-import { GameConfig } from '../src/core/GameConfig';
-import { GridMap } from '../src/core/GridMap';
-import { GridEntity } from '../src/core/GridEntity';
-import { Point2D, Orientation, generateUUID } from '../src/core/Types';
-import { ItemPayload } from '../src/core/ItemPayload';
+import { TickScheduler } from '../src/core/TickScheduler.js';
+import { GameConfig } from '../src/core/GameConfig.js';
+import { GridMap } from '../src/core/GridMap.js';
+import { GridEntity } from '../src/core/GridEntity.js';
+import { type Point2D, Orientation, generateUUID } from '../src/core/Types.js';
+import { ItemPayload } from '../src/core/ItemPayload.js';
 
 class DummyEntity extends GridEntity {
     public sweepACount: number = 0;

@@ -1,5 +1,5 @@
-import { Point2D, UUID, Orientation } from './Types';
-import { ItemPayload } from './ItemPayload';
+import { type Point2D, type UUID, Orientation } from './Types.js';
+import { ItemPayload } from './ItemPayload.js';
 
 export abstract class GridEntity {
     public readonly id: UUID;

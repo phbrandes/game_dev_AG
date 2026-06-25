@@ -1,12 +1,12 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { TickScheduler } from '../src/core/TickScheduler';
-import { GameConfig } from '../src/core/GameConfig';
-import { GridMap } from '../src/core/GridMap';
-import { Point2D, Orientation, generateUUID } from '../src/core/Types';
-import { MinerEntity, MinerState } from '../src/logistics/MinerEntity';
-import { AssemblerEntity, AssemblerState } from '../src/logistics/AssemblerEntity';
-import { PowerGridManager, IPowerNode } from '../src/core/PowerGridManager';
-import { ConveyorEntity } from '../src/logistics/ConveyorEntity';
+import { TickScheduler } from '../src/core/TickScheduler.js';
+import { GameConfig } from '../src/core/GameConfig.js';
+import { GridMap } from '../src/core/GridMap.js';
+import { type Point2D, Orientation, generateUUID } from '../src/core/Types.js';
+import { MinerEntity, MinerState } from '../src/logistics/MinerEntity.js';
+import { AssemblerEntity, AssemblerState } from '../src/logistics/AssemblerEntity.js';
+import { PowerGridManager, type IPowerNode } from '../src/core/PowerGridManager.js';
+import { ConveyorEntity } from '../src/logistics/ConveyorEntity.js';
 
 class DummyGenerator implements IPowerNode {
     public position: Point2D;

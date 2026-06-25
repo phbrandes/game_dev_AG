@@ -1,4 +1,4 @@
-import { GameConfig } from './GameConfig';
+import { GameConfig } from './GameConfig.js';
 
 const FLOOR_SHIFT = 0;
 const FLOOR_MASK = 0xFF; // 8 bits

@@ -1,9 +1,9 @@
-import { GridEntity } from '../core/GridEntity';
-import { ItemPayload } from '../core/ItemPayload';
-import { Point2D, Orientation, generateUUID } from '../core/Types';
-import { TickScheduler } from '../core/TickScheduler';
-import { GameConfig } from '../core/GameConfig';
-import { IPowerNode } from '../core/PowerGridManager';
+import { GridEntity } from '../core/GridEntity.js';
+import { ItemPayload } from '../core/ItemPayload.js';
+import { type Point2D, Orientation, generateUUID } from '../core/Types.js';
+import { TickScheduler } from '../core/TickScheduler.js';
+import { GameConfig } from '../core/GameConfig.js';
+import type { IPowerNode } from '../core/PowerGridManager.js';
 
 export enum MinerState {
     IDLE,
