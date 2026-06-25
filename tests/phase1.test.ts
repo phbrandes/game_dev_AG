@@ -1,0 +1,103 @@
+import { describe, it, expect, beforeEach } from 'vitest';
+import { TickScheduler } from '../src/core/TickScheduler';
+import { GameConfig } from '../src/core/GameConfig';
+import { GridMap } from '../src/core/GridMap';
+import { GridEntity } from '../src/core/GridEntity';
+import { Point2D, Orientation, generateUUID } from '../src/core/Types';
+
+class DummyEntity extends GridEntity {
+    public tickCount: number = 0;
+    
+    public tick(): void {
+        this.tickCount++;
+    }
+}
+
+describe('Phase 1: Core Grid & Tick Engine', () => {
+    beforeEach(() => {
+        TickScheduler.getInstance().reset();
+    });
+
+    it('Task 1.1: GridMap uses flat Int32Array and bitwise operations', () => {
+        const map = new GridMap(10, 10);
+        
+        // Assert initial state
+        expect(map.getFloor(5, 5)).toBe(0);
+        expect(map.getEntityIndex(5, 5)).toBe(0);
+        expect(map.getSignal(5, 5)).toBe(0);
+
+        // Test boundary limits
+        map.setFloor(1, 1, 255);
+        expect(map.getFloor(1, 1)).toBe(255);
+        
+        map.setEntityIndex(2, 2, 65535);
+        expect(map.getEntityIndex(2, 2)).toBe(65535);
+        
+        map.setSignal(3, 3, 255);
+        expect(map.getSignal(3, 3)).toBe(255);
+        
+        // Assert independence
+        map.setFloor(5, 5, 12);
+        map.setEntityIndex(5, 5, 3456);
+        map.setSignal(5, 5, 78);
+        
+        expect(map.getFloor(5, 5)).toBe(12);
+        expect(map.getEntityIndex(5, 5)).toBe(3456);
+        expect(map.getSignal(5, 5)).toBe(78);
+        
+        // Check out of bounds
+        expect(map.isOutOfBounds(-1, 0)).toBe(true);
+        expect(map.isOutOfBounds(10, 10)).toBe(true);
+    });
+
+    it('Task 1.2 & 1.4: TickScheduler zero time-drift and GridMap zero state mutation over 1000 ticks', () => {
+        const scheduler = TickScheduler.getInstance();
+        const map = new GridMap(10, 10);
+        
+        // Set some state to ensure it doesn't mutate
+        map.setFloor(0, 0, 5);
+        map.setEntityIndex(0, 0, 10);
+        map.setSignal(0, 0, 15);
+        
+        let ticksFired = 0;
+        scheduler.registerHandler(() => {
+            ticksFired++;
+        });
+
+        scheduler.start(0);
+        
+        let currentTime = 0;
+        const targetTime = 1000 * GameConfig.TICK_STEP_MS;
+        
+        // Simulate random frametimes between 10ms and 20ms
+        while (currentTime < targetTime) {
+            // Using a hardcoded seeded sequence approximation just to avoid Math.random() in tests
+            currentTime += 16;
+            scheduler.update(currentTime);
+        }
+        
+        // Final update to exactly hit the target time
+        scheduler.update(targetTime);
+        
+        expect(scheduler.getCurrentTick()).toBe(1000);
+        expect(ticksFired).toBe(1000);
+        
+        // Assert zero state mutation on the map
+        expect(map.getFloor(0, 0)).toBe(5);
+        expect(map.getEntityIndex(0, 0)).toBe(10);
+        expect(map.getSignal(0, 0)).toBe(15);
+    });
+
+    it('Task 1.3: GridEntity abstract class properties', () => {
+        const id = generateUUID();
+        const pos: Point2D = { x: 1, y: 2 };
+        const entity = new DummyEntity(id, pos, Orientation.East);
+        
+        expect(entity.id).toBe(id);
+        expect(entity.position).toEqual({ x: 1, y: 2 });
+        expect(entity.orientation).toBe(Orientation.East);
+        
+        entity.tick();
+        expect(entity.tickCount).toBe(1);
+    });
+});
