@@ -1,2 +1,7 @@
 {
+    "antigravity.autonomousMode.enabled": true,
+    "antigravity.autonomousMode.testMode": true,
+    "antigravity.autonomousMode.autoCommit": true,
+    "antigravity.autonomousMode.autoRunTests": true,
+    "antigravity.autonomousMode.maxRetries": 2
 }
