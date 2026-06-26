@@ -54,10 +54,11 @@ export class FlowFieldService {
         let head = 0;
 
         while (head < queue.length) {
-            const idx = queue[head++];
+            // Non-null assertion: head < queue.length guarantees the element exists.
+            const idx = queue[head++]!;
             const x = idx % width;
             const y = Math.floor(idx / width);
-            const nextCost = this.costField[idx] + 1;
+            const nextCost = this.costField[idx]! + 1;
 
             for (const n of NEIGHBORS) {
                 const nx = x + n.x;
@@ -96,7 +97,8 @@ export class FlowFieldService {
                     const nx = x + n.x;
                     const ny = y + n.y;
                     if (this.gridMap.isOutOfBounds(nx, ny)) continue;
-                    const nCost = this.costField[ny * width + nx];
+                    // isOutOfBounds already checked above; element is guaranteed to exist.
+                    const nCost = this.costField[ny * width + nx]!;
                     if (nCost < bestCost) {
                         bestCost = nCost;
                         bdx = n.x;
@@ -114,12 +116,14 @@ export class FlowFieldService {
         if (this.gridMap.isOutOfBounds(tileX, tileY) || !this.isBuilt) {
             return ZERO_VECTOR;
         }
-        return this.integrationField[tileY * this.gridMap.width + tileX];
+        // isOutOfBounds guard ensures index is within bounds.
+        return this.integrationField[tileY * this.gridMap.width + tileX]!;
     }
 
     /** Returns BFS cost for a tile. Returns Infinity if unreachable or out-of-bounds. */
     public getCostAt(tileX: number, tileY: number): number {
         if (this.gridMap.isOutOfBounds(tileX, tileY)) return Infinity;
-        return this.costField[tileY * this.gridMap.width + tileX];
+        // isOutOfBounds guard ensures index is within bounds.
+        return this.costField[tileY * this.gridMap.width + tileX]!;
     }
 }
