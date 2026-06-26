@@ -1,6 +1,6 @@
 import { GridEntity } from '../core/GridEntity.js';
 import { ItemPayload } from '../core/ItemPayload.js';
-import { type Point2D, Orientation, generateUUID } from '../core/Types.js';
+import { type Point2D, type UUID, Orientation, generateUUID } from '../core/Types.js';
 import { TickScheduler } from '../core/TickScheduler.js';
 import { GameConfig } from '../core/GameConfig.js';
 import type { IPowerNode } from '../core/PowerGridManager.js';
@@ -20,7 +20,7 @@ export class MinerEntity extends GridEntity implements IPowerNode {
     private canOutput: boolean = false;
     private oreType: string | null;
 
-    constructor(id: string, position: Point2D, orientation: Orientation, oreType: string | null = null) {
+    constructor(id: UUID, position: Point2D, orientation: Orientation, oreType: string | null = null) {
         super(id, position, orientation);
         this.oreType = oreType;
         if (this.oreType) {
